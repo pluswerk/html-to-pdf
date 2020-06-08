@@ -1,0 +1,7 @@
+plugin.tx_htmltopdf {
+  view {
+    templateRootPath = EXT:html_to_pdf/Resources/Private/Templates/
+    partialRootPath = EXT:html_to_pdf/Resources/Private/Partials/
+    layoutRootPath = EXT:html_to_pdf/Resources/Private/Layouts/
+  }
+}

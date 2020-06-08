@@ -1,0 +1,53 @@
+plugin.tx_htmltopdf {
+  view {
+    templateRootPath >
+    templateRootPaths.100 = {$plugin.tx_htmltopdf.view.templateRootPath}
+    partialRootPath >
+    partialRootPaths.100 = {$plugin.tx_htmltopdf.view.partialRootPath}
+    layoutRootPath >
+    layoutRootPaths.100 = {$plugin.tx_htmltopdf.view.layoutRootPath}
+  }
+}
+
+pdfPage = PAGE
+pdfPage {
+  typeNum = 1590672891
+
+  10 = FLUIDTEMPLATE
+  10 {
+    templateRootPaths {
+      100 = EXT:html_to_pdf/Resources/Private/Pdf/Templates/
+    }
+    partialRootPaths {
+      100 = EXT:html_to_pdf/Resources/Private/Pdf/Partials/
+    }
+    layoutRootPaths {
+      100 = EXT:html_to_pdf/Resources/Private/Pdf/Layouts/
+    }
+    file.stdWrap.cObject = CASE
+    file.stdWrap.cObject {
+      # slide the template
+      key.data = levelfield:-1, backend_layout_next_level, slide
+      key.override.field = backend_layout
+
+      # Frontend Templating depending on the value of the layout field
+      key.field = layout
+
+      default = TEXT
+      default.value = EXT:html_to_pdf/Resources/Private/Pdf/Templates/Index.html
+    }
+
+    variables {
+      currentPageId = TEXT
+      currentPageId.data = TSFE:id
+    }
+  }
+
+  includeCSS {
+    default = EXT:html_to_pdf/Resources/Public/Css/pdf.css
+  }
+}
+
+pdfDebugPage = PAGE
+pdfDebugPage < pdfPage
+pdfDebugPage.typeNum = 1590672892

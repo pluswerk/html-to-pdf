@@ -27,14 +27,10 @@ use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
-class ContentTypeResolver implements MiddlewareInterface
+final class ContentTypeResolver implements MiddlewareInterface
 {
     /**
      * Resolve the response content-type based on the page type
-     *
-     * @param ServerRequestInterface $request
-     * @param RequestHandlerInterface $handler
-     * @return ResponseInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
@@ -45,14 +41,9 @@ class ContentTypeResolver implements MiddlewareInterface
 
         switch ((int)$pageArguments->getPageType()) {
             case 1590672891:
-                if (
-                    $GLOBALS['TSFE'] instanceof TypoScriptFrontendController
-                    && $GLOBALS['TSFE']->isOutputting()
-                ) {
-                    $title = 'page';
-                    if (isset($GLOBALS['TSFE']->page['title'])) {
-                        $title = $GLOBALS['TSFE']->page['title'];
-                    }
+                if ($GLOBALS['TSFE'] instanceof TypoScriptFrontendController) {
+                    $title = $GLOBALS['TSFE']->page['title'] ?? 'page';
+
                     $pdfService = GeneralUtility::makeInstance(PdfGenerationService::class);
                     $pdf = $pdfService->generatePdf($GLOBALS['TSFE']->content, $title);
                     $body = new Stream('php://temp', 'wb+');
@@ -66,9 +57,11 @@ class ContentTypeResolver implements MiddlewareInterface
                         ]
                     );
                 }
+
                 break;
             default:
         }
+
         return $response;
     }
 }

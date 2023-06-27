@@ -17,7 +17,7 @@ namespace Pluswerk\HtmlToPdf\Service;
 
 use Mpdf\Mpdf;
 
-class PdfGenerationService
+final class PdfGenerationService
 {
     public function generatePdf(string $content, string $name = ''): Mpdf
     {
@@ -39,7 +39,7 @@ class PdfGenerationService
         $pdf->SetProtection(['print']);
         $pdf->SetDisplayMode('fullpage');
 
-        $pdf->title = $name;
+        $pdf->setTitle($name);
         $pdf->WriteHTML($content);
 
         return $pdf;

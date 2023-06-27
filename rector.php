@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Rector\DeadCode\Rector\MethodCall\RemoveEmptyMethodCallRector;
 use PLUS\GrumPHPConfig\RectorSettings;
 use Rector\Config\RectorConfig;
 use Rector\Caching\ValueObject\Storage\FileCacheStorage;
@@ -31,7 +32,7 @@ return static function (RectorConfig $rectorConfig): void {
         [
             ...RectorSettings::skip(),
             ...RectorSettings::skipTypo3(),
-
+            RemoveEmptyMethodCallRector::class, // this with Mpdf takes for ever :/
             /**
              * rector should not touch these files
              */
